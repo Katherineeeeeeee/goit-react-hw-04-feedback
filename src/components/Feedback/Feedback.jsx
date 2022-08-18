@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import Statistics from './Statistics';
 import FeedbackOptions from './FeedbackOptions';
 import Section from './Section';
@@ -37,5 +39,11 @@ const Feedback = ({
       </Section>
     </div>
   );
+};
+
+Feedback.propTypes = {
+  good: PropTypes.string,
+  neutral: PropTypes.string,
+  bad: PropTypes.string,
 };
 export default Feedback;
