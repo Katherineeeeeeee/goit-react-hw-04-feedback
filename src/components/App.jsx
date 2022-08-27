@@ -1,42 +1,51 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import Feedback from './Feedback/Feedback';
 
-export class App extends Component {
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
+//useState для кожного значення - різний. Як зробити один useState для всіх?
+
+const App = () => {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+
+  const leaveFeedback = ({ target }) => {
+    const { name } = target;
+    if (name === 'good') {
+      setGood(element => element + 1);
+      return;
+    }
+
+    if (name === 'neutral') {
+      setNeutral(element => element + 1);
+      return;
+    }
+
+    if (name === 'bad') {
+      setBad(element => element + 1);
+      return;
+    }
   };
-  countTotalFeedback = () => {
-    const { good, neutral, bad } = this.state;
+
+  const countTotalFeedback = () => {
     return good + neutral + bad;
   };
-  countPositiveFeedbackPercentage = () => {
-    const total = this.countTotalFeedback();
+
+  const countPositiveFeedbackPercentage = () => {
+    const total = countTotalFeedback();
     if (!total) {
       return 0;
     }
-    const result = (this.state.good / total) * 100;
+    const result = (good / total) * 100;
     return Number(result.toFixed(0));
   };
-  leaveFeedback = ({ target }) => {
-    const { name } = target;
-    this.setState(prevState => {
-      const value = prevState[name];
-      return {
-        [name]: value + 1,
-      };
-    });
-  };
 
-  render() {
-    return (
-      <Feedback
-        state={this.state}
-        leaveFeedback={this.leaveFeedback}
-        countTotalFeedback={this.countTotalFeedback}
-        countPositiveFeedbackPercentage={this.countPositiveFeedbackPercentage}
-      />
-    );
-  }
-}
+  return (
+    <Feedback
+      state={{ good, neutral, bad }}
+      leaveFeedback={leaveFeedback}
+      countTotalFeedback={countTotalFeedback}
+      countPositiveFeedbackPercentage={countPositiveFeedbackPercentage}
+    />
+  );
+};
+export default App;
